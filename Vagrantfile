@@ -22,6 +22,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		cd /home/core/packer
 		wget https://dl.bintray.com/mitchellh/packer/packer_0.8.6_linux_amd64.zip
 		unzip packer_0.8.6_linux_amd64.zip
+		cd ..
+		cp $(readlink .bashrc) .bashrc.new && mv .bashrc.new .bashrc
+		echo "export PATH=$PATH:/home/core/packer" >> /home/core/.bashrc
 	PREPARE
 
 	config.ssh.forward_x11 = true
