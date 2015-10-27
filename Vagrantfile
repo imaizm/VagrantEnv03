@@ -15,16 +15,20 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	config.vm.network :forwarded_port, guest: 3000, host: 3000 # rails
 	config.vm.network :forwarded_port, guest: 3690, host: 3690 # subversion
 
-#	config.vm.synced_folder "../../src", "/var/www/src", :create => true, :owner => 'vagrant', :group => 'vagrant', :mount_options => ['dmode=777', 'fmode=666']
+	config.vm.synced_folder "packer-scripts", "/home/core/packer-scripts", :create => true, :owner => 'core', :group => 'core', :mount_options => ['dmode=777', 'fmode=666']
 
 	config.vm.provision :shell, :inline => <<-PREPARE
-		mkdir /home/core/packer
-		cd /home/core/packer
-		wget https://dl.bintray.com/mitchellh/packer/packer_0.8.6_linux_amd64.zip
-		unzip packer_0.8.6_linux_amd64.zip
-		cd ..
-		cp $(readlink .bashrc) .bashrc.new && mv .bashrc.new .bashrc
-		echo "export PATH=$PATH:/home/core/packer" >> /home/core/.bashrc
+		if [ ! -e /home/core/packer ]; then
+			mkdir /home/core/packer
+			cd /home/core/packer
+			wget https://dl.bintray.com/mitchellh/packer/packer_0.8.6_linux_amd64.zip
+			unzip packer_0.8.6_linux_amd64.zip
+			cd ..
+		fi
+		if [ -L .bashrc ]; then
+			cp $(readlink .bashrc) .bashrc.new && mv .bashrc.new .bashrc
+			echo "export PATH=$PATH:/home/core/packer" >> /home/core/.bashrc
+		fi
 	PREPARE
 
 	config.ssh.forward_x11 = true
