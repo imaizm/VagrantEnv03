@@ -36,7 +36,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 			rm packer_0.8.6_linux_amd64.zip
 			cd ..
 			chown -R core:core packer
-			echo "export PATH=$PATH:/home/core/packer" >> /home/core/.bashrc
+			echo "export PATH=\\$PATH:/home/core/packer" >> /home/core/.bashrc
 		fi
 
 		if [ ! -e /usr/bin/nomad ]; then
@@ -47,7 +47,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 			unzip nomad.zip > /dev/null 2>&1
 			rm nomad.zip
 			chmod +x nomad
-			echo "export PATH=$PATH:/home/core/nomad" >> /home/core/.bashrc
+			echo "export PATH=\\$PATH:/home/core/nomad" >> /home/core/.bashrc
 
 			mkdir /etc/nomad.d
 			chmod a+w /etc/nomad.d
