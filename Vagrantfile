@@ -19,7 +19,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	config.vm.network :forwarded_port, guest: 3000, host: 3000 # rails
 	config.vm.network :forwarded_port, guest: 3690, host: 3690 # subversion
 
-	config.vm.synced_folder "packer-scripts", "/home/core/packer-scripts", :create => true, :owner => 'core', :group => 'core', :mount_options => ['dmode=777', 'fmode=666']
+#	config.vm.synced_folder "packer-scripts", "/home/core/packer-scripts", :create => true, :owner => 'core', :group => 'core', :mount_options => ['dmode=777', 'fmode=666']
 
 	config.vm.provision :shell, :inline => <<-PREPARE
 		if [ -L .bashrc ]; then
@@ -39,19 +39,22 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 			echo "export PATH=\\$PATH:/home/core/packer" >> /home/core/.bashrc
 		fi
 
-		if [ ! -e /usr/bin/nomad ]; then
+		if [ ! -e /opt/bin/nomad ]; then
 			echo Installing Nomad...
-			mkdir /home/core/nomad
-			cd /home/core/nomad
+			mkdir -p /opt/bin
+			cd /opt/bin
 			curl -sSL https://dl.bintray.com/mitchellh/nomad/nomad_0.1.2_linux_amd64.zip -o nomad.zip
 			unzip nomad.zip > /dev/null 2>&1
 			rm nomad.zip
 			chmod +x nomad
-			echo "export PATH=\\$PATH:/home/core/nomad" >> /home/core/.bashrc
 
 			mkdir /etc/nomad.d
 			chmod a+w /etc/nomad.d
 		fi
+
+		cd /home/core
+		git clone https://github.com/imaizm/VagrantEnv03.git
+		chown -R core:core VagrantEnv03
 	PREPARE
 
 	config.ssh.forward_x11 = true
