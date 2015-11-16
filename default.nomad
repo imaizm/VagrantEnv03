@@ -61,4 +61,30 @@ job "example" {
 			}
 		}
 	}
+
+	group "web" {
+		# count = 1
+
+		task "nginx" {
+			# Use Docker to run the task.
+			driver = "docker"
+
+			# Configure Docker driver with the image
+			config {
+				image = "nginx:latest"
+			}
+
+			# We must specify the resources required for
+			# this task to ensure it runs on a machine with
+			# enough capacity.
+			resources {
+				cpu = 500 # 500 Mhz
+				memory = 256 # 256MB
+				network {
+					mbits = 10
+					dynamic_ports = ["8080"]
+				}
+			}
+		}
+	}
 }

@@ -19,7 +19,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	config.vm.network :forwarded_port, guest: 3000, host: 3000 # rails
 	config.vm.network :forwarded_port, guest: 3690, host: 3690 # subversion
 
-#	config.vm.synced_folder "packer-scripts", "/home/core/packer-scripts", :create => true, :owner => 'core', :group => 'core', :mount_options => ['dmode=777', 'fmode=666']
+	config.vm.synced_folder ".", "/home/core/vagrant-share",
+		:create => true, :owner => 'core', :group => 'core',
+		:mount_options => ['dmode=777', 'fmode=666']
 
 	config.vm.provision :shell, :inline => <<-PREPARE
 		if [ -L .bashrc ]; then
