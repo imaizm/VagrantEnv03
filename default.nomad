@@ -74,6 +74,10 @@ job "example" {
 				image = "nginx:latest"
 			}
 
+			service {
+				port = "http"
+			}
+
 			# We must specify the resources required for
 			# this task to ensure it runs on a machine with
 			# enough capacity.
@@ -82,7 +86,11 @@ job "example" {
 				memory = 256 # 256MB
 				network {
 					mbits = 10
-					dynamic_ports = ["8080"]
+					port "http" {
+					}
+					port "https" {
+						static = 443
+					}
 				}
 			}
 		}

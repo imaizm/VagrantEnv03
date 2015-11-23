@@ -33,19 +33,33 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 			echo Installing Packer...
 			mkdir /home/core/packer
 			cd /home/core/packer
-			wget https://dl.bintray.com/mitchellh/packer/packer_0.8.6_linux_amd64.zip > /dev/null 2>&1
-			unzip packer_0.8.6_linux_amd64.zip > /dev/null 2>&1
-			rm packer_0.8.6_linux_amd64.zip
+			curl -sSL https://releases.hashicorp.com/packer/0.8.6/packer_0.8.6_linux_amd64.zip -o packer.zip
+			unzip packer.zip > /dev/null 2>&1
+			rm packer.zip
 			cd ..
 			chown -R core:core packer
 			echo "export PATH=\\$PATH:/home/core/packer" >> /home/core/.bashrc
 		fi
 
+		if [ ! -e /opt/bin/consul ]; then
+			echo Installing Consul...
+			if [ ! -e /opt/bin ]; then
+				mkdir -p /opt/bin
+			fi
+			cd /opt/bin
+			curl -sSL https://releases.hashicorp.com/consul/0.5.2/consul_0.5.2_linux_amd64.zip -o consul.zip
+			unzip consul.zip > /dev/null 2>&1
+			rm consul.zip
+			chmod +x consul
+		fi
+
 		if [ ! -e /opt/bin/nomad ]; then
 			echo Installing Nomad...
-			mkdir -p /opt/bin
+			if [ ! -e /opt/bin ]; then
+				mkdir -p /opt/bin
+			fi
 			cd /opt/bin
-			curl -sSL https://dl.bintray.com/mitchellh/nomad/nomad_0.1.2_linux_amd64.zip -o nomad.zip
+			curl -sSL https://releases.hashicorp.com/nomad/0.2.0/nomad_0.2.0_linux_amd64.zip -o nomad.zip
 			unzip nomad.zip > /dev/null 2>&1
 			rm nomad.zip
 			chmod +x nomad
@@ -62,3 +76,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	config.ssh.forward_x11 = true
 
 end
+
+### Memo
+# curl -s http://127.0.0.1:8500/v1/catalog/nodes  | jq '.'
+# consul agent -data-dir=/tmp/consul -server -bootstrap-expect 2 &
+# sudo nohup nomad agent -dev > /tmp/nomad.out 2>&1 &
