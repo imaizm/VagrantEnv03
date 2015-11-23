@@ -63,7 +63,7 @@ job "example" {
 	}
 
 	group "web" {
-		# count = 1
+		count = 2
 
 		task "nginx" {
 			# Use Docker to run the task.
@@ -76,6 +76,12 @@ job "example" {
 
 			service {
 				port = "http"
+			#	check {
+			#		type = "http"
+			#		path = "/health"
+			#		interval = "10s"
+			#		timeout = "2s"
+			#	}
 			}
 
 			# We must specify the resources required for
@@ -83,7 +89,7 @@ job "example" {
 			# enough capacity.
 			resources {
 				cpu = 500 # 500 Mhz
-				memory = 256 # 256MB
+				memory = 128 # 128 MB
 				network {
 					mbits = 10
 					port "http" {

@@ -51,6 +51,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 			unzip consul.zip > /dev/null 2>&1
 			rm consul.zip
 			chmod +x consul
+
+			mkdir /tmp/consul
+			chmod 777 /tmp/consul
 		fi
 
 		if [ ! -e /opt/bin/nomad ]; then
@@ -68,9 +71,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 			chmod a+w /etc/nomad.d
 		fi
 
-		cd /home/core
-		git clone https://github.com/imaizm/VagrantEnv03.git
-		chown -R core:core VagrantEnv03
+		if [ ! -e /home/core/VagrantEnv03 ]; then
+			cd /home/core
+			su core -c "git clone https://github.com/imaizm/VagrantEnv03.git"
+		else
+			echo Updating git repo...
+			cd /home/core/VagrantEnv03
+			su core -c "git pull"
+		fi
 	PREPARE
 
 	config.ssh.forward_x11 = true
@@ -79,5 +87,9 @@ end
 
 ### Memo
 # curl -s http://127.0.0.1:8500/v1/catalog/nodes  | jq '.'
+# curl -s http://127.0.0.1:8500/v1/catalog/services  | jq '.'
+# curl -s http://127.0.0.1:8500/v1/catalog/service/example-web-nginx  | jq '.'
+# dig @127.0.0.1 -p 8600 example-web-nginx.service.consul
+# consul agent -server -bootstrap-expect 1 -data-dir /tmp/consul
 # consul agent -data-dir=/tmp/consul -server -bootstrap-expect 2 &
 # sudo nohup nomad agent -dev > /tmp/nomad.out 2>&1 &
