@@ -1,0 +1,29 @@
+{
+	"builders":[{
+		"type": "docker",
+		"image": "centos",
+		"export_path": "image.tar"
+	}],
+	"provisioners":[
+		{
+			"type": "shell",
+			"inline": [
+				"rpm -iUvh http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm",
+				"yum -y update",
+				"yum -y install ansible"
+			]
+		},
+		{
+			"type": "ansible-local",
+			"playbook_file": "ansible/web-front.yml"
+		}
+	],
+	"post-processors": [
+		{
+			"type": "docker-import",
+			"repository": "imaizm/web-front",
+			"tag": "0.1"
+		}
+	]
+}
+
