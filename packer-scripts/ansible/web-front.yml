@@ -4,5 +4,5 @@
     - name: Install apache2
       yum: name={{ item }} update_cache=yes
       with_items:
-        - git
         - httpd
+        - dnsmasq
