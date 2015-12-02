@@ -1,0 +1,16 @@
+- name: install unzip
+  apt: name=unzip state=installed
+- name: install consul
+  shell: |
+    curl -sSL https://releases.hashicorp.com/consul/0.5.2/consul_0.5.2_linux_amd64.zip -o consul.zip
+    unzip consul.zip > /dev/null 2>&1
+    rm consul.zip
+    chmod +x consul
+    mkdir /tmp/consul
+    chmod 777 /tmp/consul
+  args:
+    chdir: /usr/local/bin/
+- name: configure consul
+  template: src=supervisor_consul.ini.j2 dest=/etc/supervisor/conf.d/supervisor_consul.ini
+  notify:
+    - restart supervisor

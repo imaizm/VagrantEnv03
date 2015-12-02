@@ -1,21 +1,27 @@
 {
 	"builders":[{
 		"type": "docker",
-		"image": "centos",
+		"image": "ubuntu",
 		"export_path": "image.tar"
 	}],
 	"provisioners":[
 		{
 			"type": "shell",
 			"inline": [
-				"rpm -iUvh http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm",
-				"yum -y update",
-				"yum -y install ansible"
+				"apt-get -y update",
+				"apt-get install -y python-pip python-dev",
+				"pip install ansible"
 			]
 		},
 		{
 			"type": "ansible-local",
-			"playbook_file": "ansible/web-front.yml"
+			"playbook_file": "ansible/web-front.yml",
+			"role_paths": [
+				"ansible/roles/httpd",
+				"ansible/roles/supervisor",
+				"ansible/roles/consul",
+				"ansible/roles/dnsmasq"
+			]
 		}
 	],
 	"post-processors": [

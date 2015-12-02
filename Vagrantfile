@@ -12,12 +12,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		vb.memory = "1024"
 	end
 
-	config.vm.network :forwarded_port, guest: 80, host: 10080 # http
-	config.vm.network :forwarded_port, guest: 8080, host: 18080 # http
-	config.vm.network :forwarded_port, guest: 8082, host: 18082 # http
-	config.vm.network :forwarded_port, guest: 8180, host: 18180 # jenkins
-	config.vm.network :forwarded_port, guest: 3000, host: 3000 # rails
-	config.vm.network :forwarded_port, guest: 3690, host: 3690 # subversion
+#	config.vm.network :forwarded_port, guest: 80, host: 10080 # http
 
 	config.vm.synced_folder ".", "/home/core/vagrant-share",
 		:create => true, :owner => 'core', :group => 'core',

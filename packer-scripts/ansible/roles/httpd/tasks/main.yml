@@ -1,0 +1,6 @@
+- name: install httpd
+  apt: name=apache2 state=installed
+- name: configure httpd
+  template: src=apache2.conf_2.4.j2 dest=/etc/apache2/apache2.conf
+  notify:
+    - enable httpd

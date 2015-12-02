@@ -1,0 +1,10 @@
+[program:consul]
+command=consul agent -server -bootstrap-expect 1 -data-dir /tmp/consul
+user=root
+directory=/usr/local/bin
+autorestart=true
+stdout_logfile=/var/log/supervisor/job-supervisord.log
+stdout_logfile_maxbytes=1MB
+stdout_logfile_backups=5
+stdout_capture_maxbytes=1MB
+redirect_stderr=true

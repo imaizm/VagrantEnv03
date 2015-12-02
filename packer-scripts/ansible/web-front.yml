@@ -1,8 +1,7 @@
 - hosts: 127.0.0.1
   user: root
-  tasks:
-    - name: Install apache2
-      yum: name={{ item }} update_cache=yes
-      with_items:
-        - httpd
-        - dnsmasq
+  roles:
+    - httpd
+    - supervisor
+    - consul
+    - dnsmasq
