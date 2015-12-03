@@ -16,7 +16,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 	config.vm.synced_folder ".", "/home/core/vagrant-share",
 		:create => true, :owner => 'core', :group => 'core',
-		:mount_options => ['dmode=777', 'fmode=666']
+		:nsf => {:mount_options => ['dmode=777', 'fmode=666']}
 
 	config.vm.provision :shell, :inline => <<-PREPARE
 		if [ -L .bashrc ]; then
