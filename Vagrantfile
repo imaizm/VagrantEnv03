@@ -24,6 +24,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 			chown core:core /home/core/.bashrc
 		fi
 
+		if [ ! -e /home/core/go ]; then
+			echo Installing Go...
+			cd /home/core
+			curl -sSL https://storage.googleapis.com/golang/go1.5.1.linux-amd64.tar.gz -o go.tar.gz
+			tar zxf go.tar.gz
+			rm go.tar.gz
+			chown -R core:core go
+			echo "export GOROOT=/home/core/go" >> /home/core/.bashrc
+			echo "export PATH=\\$PATH:/home/core/go/bin" >> /home/core/.bashrc
+		fi
+
 		if [ ! -e /home/core/packer ]; then
 			echo Installing Packer...
 			mkdir /home/core/packer

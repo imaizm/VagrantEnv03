@@ -14,6 +14,4 @@
   args:
     chdir: /usr/local/bin/
 - name: configure consul
-  template: src=supervisor_consul.ini.j2 dest=/etc/supervisor/conf.d/supervisor_consul.ini
-  notify:
-    - restart supervisor
+  template: src=supervisor_consul.conf.j2 dest=/etc/supervisor/conf.d/supervisor_consul.conf
