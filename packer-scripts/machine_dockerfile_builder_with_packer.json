@@ -1,0 +1,32 @@
+{
+	"builders":[{
+		"type": "docker",
+		"image": "ubuntu",
+		"export_path": "image.tar"
+	}],
+	"provisioners":[
+		{
+			"type": "shell",
+			"inline": [
+				"apt-get -y update",
+				"apt-get install -y python-pip python-dev",
+				"pip install ansible"
+			]
+		},
+		{
+			"type": "ansible-local",
+			"playbook_file": "ansible/dockerfile_builder_with_packer.yml",
+			"role_paths": [
+				"ansible/roles/packer",
+				"ansible/roles/go"
+			]
+		}
+	],
+	"post-processors": [
+		{
+			"type": "docker-import",
+			"repository": "imaizm/dockerfile_builder",
+			"tag": "0.1"
+		}
+	]
+}

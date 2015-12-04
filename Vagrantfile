@@ -31,8 +31,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 			tar zxf go.tar.gz
 			rm go.tar.gz
 			chown -R core:core go
+			
+			mkdir go-work
+			chown core:core go-work
+			
 			echo "export GOROOT=/home/core/go" >> /home/core/.bashrc
-			echo "export PATH=\\$PATH:/home/core/go/bin" >> /home/core/.bashrc
+			echo "export GOPATH=/home/core/go-work" >> /home/core/.bashrc
+			echo "export PATH=\\$PATH:\\$GOROOT/bin" >> /home/core/.bashrc
 		fi
 
 		if [ ! -e /home/core/packer ]; then

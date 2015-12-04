@@ -1,0 +1,14 @@
+- name: install curl
+  apt: pkg={{ item }} state=installed force=yes update_cache=yes
+  with_items:
+    - curl
+- name: install go
+  shell: |
+    curl -sSL https://storage.googleapis.com/golang/go1.5.1.linux-amd64.tar.gz -o go.tar.gz
+    tar zxf go.tar.gz
+    rm go.tar.gz
+    mkdir /root/go
+    echo "export GOPATH=/root/go" >> /root/.profile
+    echo "export PATH=\$PATH:/usr/local/go/bin" >> /root/.profile
+  args:
+    chdir: /usr/local/

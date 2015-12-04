@@ -1,0 +1,15 @@
+- name: install curl, unzip
+  apt: pkg={{ item }} state=installed force=yes update_cache=yes
+  with_items:
+    - curl
+    - unzip
+- name: install packer
+  shell: |
+    mkdir /usr/local/packer
+    cd /usr/local/packer
+    curl -sSL https://releases.hashicorp.com/packer/0.8.6/packer_0.8.6_linux_amd64.zip -o packer.zip
+    unzip packer.zip > /dev/null 2>&1
+    rm packer.zip
+    echo "export PATH=\$PATH:/usr/local/packer" >> /root/.profile
+  args:
+    chdir: /usr/local/
