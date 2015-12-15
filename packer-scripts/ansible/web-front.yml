@@ -1,7 +1,7 @@
 - hosts: 127.0.0.1
   user: root
   roles:
-    - httpd
     - supervisor
+    - httpd
     - consul
     - dnsmasq
