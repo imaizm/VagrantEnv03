@@ -16,7 +16,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 	config.vm.synced_folder ".", "/home/core/vagrant-share",
 		:create => true, :owner => 'core', :group => 'core',
-		:nsf => {:mount_options => ['dmode=777', 'fmode=666']}
+		:nfs => {:mount_options => ['dmode=777', 'fmode=666']}
 
 	config.vm.provision :shell, :inline => <<-PREPARE
 		if [ -L .bashrc ]; then
@@ -104,3 +104,7 @@ end
 # consul agent -server -bootstrap-expect 1 -data-dir /tmp/consul
 # consul agent -data-dir=/tmp/consul -server -bootstrap-expect 2 &
 # sudo nohup nomad agent -dev > /tmp/nomad.out 2>&1 &
+# cd vagrant-share/packer-scripts
+# packer build machine_web-front.json
+# docker build -t imaizm/web-front:0.1_with_cmd dockerfiles/web-front/
+# docker run -d -p 80 imaizm/web-front:0.1_with_cmd
