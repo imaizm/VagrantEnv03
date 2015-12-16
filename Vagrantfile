@@ -12,7 +12,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		vb.memory = "1024"
 	end
 
-#	config.vm.network :forwarded_port, guest: 80, host: 10080 # http
+	config.vm.network :forwarded_port, guest: 8080, host: 18080 # http
 
 	config.vm.synced_folder ".", "/home/core/vagrant-share",
 		:create => true, :owner => 'core', :group => 'core',
@@ -107,4 +107,4 @@ end
 # cd vagrant-share/packer-scripts
 # packer build machine_web-front.json
 # docker build -t imaizm/web-front:0.1_with_cmd dockerfiles/web-front/
-# docker run -d -p 80 imaizm/web-front:0.1_with_cmd
+# docker run -d -p 8080:80 imaizm/web-front:0.1_with_cmd
