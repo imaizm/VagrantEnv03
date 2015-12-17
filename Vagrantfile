@@ -73,7 +73,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 				mkdir -p /opt/bin
 			fi
 			cd /opt/bin
-			curl -sSL https://releases.hashicorp.com/nomad/0.2.0/nomad_0.2.0_linux_amd64.zip -o nomad.zip
+			curl -sSL https://releases.hashicorp.com/nomad/0.2.2/nomad_0.2.2_linux_amd64.zip -o nomad.zip
 			unzip nomad.zip > /dev/null 2>&1
 			rm nomad.zip
 			chmod +x nomad
@@ -97,14 +97,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 end
 
 ### Memo
-# curl -s http://127.0.0.1:8500/v1/catalog/nodes  | jq '.'
-# curl -s http://127.0.0.1:8500/v1/catalog/services  | jq '.'
-# curl -s http://127.0.0.1:8500/v1/catalog/service/example-web-nginx  | jq '.'
-# dig @127.0.0.1 -p 8600 example-web-nginx.service.consul
-# consul agent -server -bootstrap-expect 1 -data-dir /tmp/consul
-# consul agent -data-dir=/tmp/consul -server -bootstrap-expect 2 &
-# sudo nohup nomad agent -dev > /tmp/nomad.out 2>&1 &
 # cd vagrant-share/packer-scripts
 # packer build machine_web-front.json
 # docker build -t imaizm/web-front:0.1_with_cmd dockerfiles/web-front/
 # docker run -d -p 8080:80 imaizm/web-front:0.1_with_cmd
+# cd
+# nohup consul agent -server -bootstrap-expect 1 -data-dir /tmp/consul > /tmp/consul.out 2>&1 &
+# sudo nohup nomad agent -dev > /tmp/nomad.out 2>&1 &
+# nomad run default.nomad
+# curl -s http://127.0.0.1:8500/v1/catalog/nodes  | jq '.'
+# curl -s http://127.0.0.1:8500/v1/catalog/services  | jq '.'
+# curl -s http://127.0.0.1:8500/v1/catalog/service/example-web-nginx  | jq '.'
+# dig @127.0.0.1 -p 8600 example-web-nginx.service.consul
+#
+# consul agent -data-dir=/tmp/consul -server -bootstrap-expect 2 &
