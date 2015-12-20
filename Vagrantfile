@@ -73,7 +73,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 				mkdir -p /opt/bin
 			fi
 			cd /opt/bin
-			curl -sSL https://releases.hashicorp.com/nomad/0.2.2/nomad_0.2.2_linux_amd64.zip -o nomad.zip
+			curl -sSL https://releases.hashicorp.com/nomad/0.2.3/nomad_0.2.3_linux_amd64.zip -o nomad.zip
 			unzip nomad.zip > /dev/null 2>&1
 			rm nomad.zip
 			chmod +x nomad

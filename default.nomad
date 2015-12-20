@@ -33,55 +33,55 @@ job "example" {
 
 	# Create a 'cache' group. Each task in the group will be
 	# scheduled onto the same machine.
-	group "cache" {
-		# Control the number of instances of this groups.
-		# Defaults to 1
-		# count = 1
-
-		# Define a task to run
-		task "redis" {
-			# Use Docker to run the task.
-			driver = "docker"
-
-			# Configure Docker driver with the image
-			config {
-				image = "redis:latest"
-			}
-
-			# We must specify the resources required for
-			# this task to ensure it runs on a machine with
-			# enough capacity.
-			resources {
-				cpu = 500 # 500 Mhz
-				memory = 256 # 256MB
-				network {
-					mbits = 10
-					dynamic_ports = ["6379"]
-				}
-			}
-		}
-	}
+#	group "cache" {
+#		# Control the number of instances of this groups.
+#		# Defaults to 1
+#		# count = 1
+#
+#		# Define a task to run
+#		task "redis" {
+#			# Use Docker to run the task.
+#			driver = "docker"
+#
+#			# Configure Docker driver with the image
+#			config {
+#				image = "redis:latest"
+#			}
+#
+#			# We must specify the resources required for
+#			# this task to ensure it runs on a machine with
+#			# enough capacity.
+#			resources {
+#				cpu = 500 # 500 Mhz
+#				memory = 256 # 256MB
+#				network {
+#					mbits = 10
+#					dynamic_ports = ["6379"]
+#				}
+#			}
+#		}
+#	}
 
 	group "web" {
 		count = 2
 
-		task "nginx" {
+		task "httpd" {
 			# Use Docker to run the task.
 			driver = "docker"
 
 			# Configure Docker driver with the image
 			config {
-				image = "nginx:latest"
+				image = "imaizm/web-front:0.1_with_cmd"
 			}
 
 			service {
 				port = "http"
-			#	check {
-			#		type = "http"
-			#		path = "/health"
-			#		interval = "10s"
-			#		timeout = "2s"
-			#	}
+				check {
+					type = "http"
+					path = "/"
+					interval = "10s"
+					timeout = "2s"
+				}
 			}
 
 			# We must specify the resources required for
@@ -93,9 +93,6 @@ job "example" {
 				network {
 					mbits = 10
 					port "http" {
-					}
-					port "https" {
-						static = 443
 					}
 				}
 			}
