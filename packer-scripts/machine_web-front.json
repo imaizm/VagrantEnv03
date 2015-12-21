@@ -20,6 +20,7 @@
 				"ansible/roles/httpd",
 				"ansible/roles/supervisor",
 				"ansible/roles/consul",
+				"ansible/roles/fluentd",
 				"ansible/roles/dnsmasq"
 			]
 		}
@@ -32,4 +33,3 @@
 		}
 	]
 }
-

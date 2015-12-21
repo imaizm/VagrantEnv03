@@ -1,0 +1,6 @@
+- name: install curl
+  apt: name=curl state=installed
+- name: install fluentd
+  shell: curl -L https://toolbelt.treasuredata.com/sh/install-ubuntu-trusty-td-agent2.sh | sh
+- name: configure consul
+  template: src=supervisor_fluentd.conf.j2 dest=/etc/supervisor/conf.d/supervisor_fluentd.conf
