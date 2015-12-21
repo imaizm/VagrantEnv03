@@ -35,3 +35,5 @@ build/
 .rvmrc
 
 .vagrant
+
+/nomad
