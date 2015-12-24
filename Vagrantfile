@@ -111,10 +111,12 @@ end
 # cd
 # nohup consul agent -server -bootstrap-expect 1 -data-dir /tmp/consul > /tmp/consul.out 2>&1 &
 # sudo nohup nomad agent -dev > /tmp/nomad.out 2>&1 &
-# nomad run default.nomad
+# cd vagrant-share/nomad-scripts
+# nomad run docker_without_cmd.hcl
+# nomad run docker_with_cmd.hcl
 # curl -s http://127.0.0.1:8500/v1/catalog/nodes  | jq '.'
 # curl -s http://127.0.0.1:8500/v1/catalog/services  | jq '.'
 # curl -s http://127.0.0.1:8500/v1/catalog/service/example-web-httpd  | jq '.'
-# dig @127.0.0.1 -p 8600 example-web-nginx.service.consul
+# dig @127.0.0.1 -p 8600 example-web-httpd.service.consul
 #
 # consul agent -data-dir=/tmp/consul -server -bootstrap-expect 2 &
