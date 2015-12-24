@@ -90,6 +90,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 			cd /home/core/VagrantEnv03
 			su core -c "git pull"
 		fi
+		
+		if ! docker images | grep -e "imaizm/web-front" -e "0.1" > /dev/null 2>&1; then
+			echo packer build machine_web-front.json
+			cd /home/core/VagrantEnv03/packer-scripts
+			su core -c "/home/core/packer/packer build machine_web-front.json"
+		fi
+		
 	PREPARE
 
 	config.ssh.forward_x11 = true
