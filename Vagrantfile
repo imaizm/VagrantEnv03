@@ -114,7 +114,7 @@ end
 # nomad run default.nomad
 # curl -s http://127.0.0.1:8500/v1/catalog/nodes  | jq '.'
 # curl -s http://127.0.0.1:8500/v1/catalog/services  | jq '.'
-# curl -s http://127.0.0.1:8500/v1/catalog/service/example-web-nginx  | jq '.'
+# curl -s http://127.0.0.1:8500/v1/catalog/service/example-web-httpd  | jq '.'
 # dig @127.0.0.1 -p 8600 example-web-nginx.service.consul
 #
 # consul agent -data-dir=/tmp/consul -server -bootstrap-expect 2 &
