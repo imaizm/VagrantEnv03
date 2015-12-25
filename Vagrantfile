@@ -106,14 +106,14 @@ end
 ### Memo
 # cd vagrant-share/packer-scripts
 # packer build machine_web-front.json
-# docker build -t imaizm/web-front:0.1_with_cmd dockerfiles/web-front/
+# docker build -t imaizm/web-front:0.1_with_cmd /home/core/vagrant-share/packer-scripts/dockerfiles/web-front/
 # docker run -d -p 8080:80 imaizm/web-front:0.1_with_cmd
 # cd
 # nohup consul agent -server -bootstrap-expect 1 -data-dir /tmp/consul > /tmp/consul.out 2>&1 &
 # sudo nohup nomad agent -dev > /tmp/nomad.out 2>&1 &
 # cd vagrant-share/nomad-scripts
-# nomad run docker_without_cmd.hcl
-# nomad run docker_with_cmd.hcl
+# nomad run /home/core/vagrant-share/nomad-scripts/docker_without_cmd.hcl
+# nomad run /home/core/vagrant-share/nomad-scripts/docker_with_cmd.hcl
 # curl -s http://127.0.0.1:8500/v1/catalog/nodes  | jq '.'
 # curl -s http://127.0.0.1:8500/v1/catalog/services  | jq '.'
 # curl -s http://127.0.0.1:8500/v1/catalog/service/example-web-httpd  | jq '.'
