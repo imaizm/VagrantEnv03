@@ -12,7 +12,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		vb.memory = "1024"
 	end
 
-	config.vm.network :forwarded_port, guest: 8080, host: 18080 # http
+	config.vm.network :forwarded_port, guest: 8500, host: 18500 # consul ui
 
 	config.vm.synced_folder ".", "/home/core/vagrant-share",
 		:create => true, :owner => 'core', :group => 'core',
@@ -66,6 +66,22 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 			mkdir /tmp/consul
 			chmod 777 /tmp/consul
 		fi
+		
+		if [ ! -e /home/core/consul-web-ui ]; then
+			echo Installing Consul Web UI...
+			mkdir /home/core/consul-web-ui
+			cd /home/core/consul-web-ui
+			curl -sSL https://releases.hashicorp.com/consul/0.5.2/consul_0.5.2_web_ui.zip -o consul-web-ui.zip
+			unzip consul-web-ui.zip > /dev/null 2>&1
+			rm consul-web-ui.zip
+			cd ..
+			chown -R core:core consul-web-ui
+		fi
+		
+		if ! ps -a | grep -e "consul" > /dev/null 2>&1; then
+			echo Stating Consul...
+			nohup /opt/bin/consul agent -server -bootstrap-expect 1 -data-dir /tmp/consul -ui-dir /home/core/consul-web-ui/dist -client=0.0.0.0 > /tmp/consul_init.out 2>&1 &
+		fi
 
 		if [ ! -e /opt/bin/nomad ]; then
 			echo Installing Nomad...
@@ -109,7 +125,7 @@ end
 # docker build -t imaizm/web-front:0.1_with_cmd /home/core/vagrant-share/packer-scripts/dockerfiles/web-front/
 # docker run -d -p 8080:80 imaizm/web-front:0.1_with_cmd
 # cd
-# nohup consul agent -server -bootstrap-expect 1 -data-dir /tmp/consul > /tmp/consul.out 2>&1 &
+# nohup consul agent -server -bootstrap-expect 1 -data-dir /tmp/consul -ui-dir /home/core/consul-web-ui/dist -client=0.0.0.0 > /tmp/consul.out 2>&1 &
 # sudo nohup nomad agent -dev > /tmp/nomad.out 2>&1 &
 # cd vagrant-share/nomad-scripts
 # nomad run /home/core/vagrant-share/nomad-scripts/docker_without_cmd.hcl
