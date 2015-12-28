@@ -80,7 +80,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		
 		if ! ps -a | grep -e "consul" > /dev/null 2>&1; then
 			echo Stating Consul...
-			nohup /opt/bin/consul agent -server -bootstrap-expect 1 -data-dir /tmp/consul -ui-dir /home/core/consul-web-ui/dist -client=0.0.0.0 > /tmp/consul_init.out 2>&1 &
+			su core -c "nohup /opt/bin/consul agent -server -bootstrap-expect 1 -data-dir /tmp/consul -ui-dir /home/core/consul-web-ui/dist > /tmp/consul.out 2>&1 &"
 		fi
 
 		if [ ! -e /opt/bin/nomad ]; then
