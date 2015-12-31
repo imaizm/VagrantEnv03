@@ -24,21 +24,21 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 			chown core:core /home/core/.bashrc
 		fi
 
-		if [ ! -e /home/core/go ]; then
-			echo Installing Go...
-			cd /home/core
-			curl -sSL https://storage.googleapis.com/golang/go1.5.1.linux-amd64.tar.gz -o go.tar.gz
-			tar zxf go.tar.gz
-			rm go.tar.gz
-			chown -R core:core go
-
-			mkdir go-work
-			chown core:core go-work
-
-			echo "export GOROOT=/home/core/go" >> /home/core/.bashrc
-			echo "export GOPATH=/home/core/go-work" >> /home/core/.bashrc
-			echo "export PATH=\\$PATH:\\$GOROOT/bin" >> /home/core/.bashrc
-		fi
+	#	if [ ! -e /home/core/go ]; then
+	#		echo Installing Go...
+	#		cd /home/core
+	#		curl -sSL https://storage.googleapis.com/golang/go1.5.1.linux-amd64.tar.gz -o go.tar.gz
+	#		tar zxf go.tar.gz
+	#		rm go.tar.gz
+	#		chown -R core:core go
+	#
+	#		mkdir go-work
+	#		chown core:core go-work
+	#
+	#		echo "export GOROOT=/home/core/go" >> /home/core/.bashrc
+	#		echo "export GOPATH=/home/core/go-work" >> /home/core/.bashrc
+	#		echo "export PATH=\\$PATH:\\$GOROOT/bin" >> /home/core/.bashrc
+	#	fi
 
 		if [ ! -e /home/core/packer ]; then
 			echo Installing Packer...
@@ -78,10 +78,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 			chown -R core:core consul-web-ui
 		fi
 		
-		if ! ps -a | grep -e "consul" > /dev/null 2>&1; then
-			echo Stating Consul...
-			su core -c "nohup /opt/bin/consul agent -server -bootstrap-expect 1 -data-dir /tmp/consul -ui-dir /home/core/consul-web-ui/dist > /tmp/consul.out 2>&1 &"
-		fi
+	#	if ! ps -a | grep -e "consul" > /dev/null 2>&1; then
+	#		echo Stating Consul...
+	#		su core -c "nohup /opt/bin/consul agent -server -bootstrap-expect 1 -data-dir /tmp/consul -ui-dir /home/core/consul-web-ui/dist > /tmp/consul.out 2>&1 &"
+	#	fi
 
 		if [ ! -e /opt/bin/nomad ]; then
 			echo Installing Nomad...
@@ -115,24 +115,69 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		
 	PREPARE
 
-	config.ssh.forward_x11 = true
+#	config.ssh.forward_x11 = true
 
 end
 
 ### Memo
-# cd vagrant-share/packer-scripts
-# packer build machine_web-front.json
-# docker build -t imaizm/web-front:0.1_with_cmd /home/core/vagrant-share/packer-scripts/dockerfiles/web-front/
-# docker run -d -p 8080:80 imaizm/web-front:0.1_with_cmd
-# cd
-# nohup consul agent -server -bootstrap-expect 1 -data-dir /tmp/consul -ui-dir /home/core/consul-web-ui/dist -client=0.0.0.0 > /tmp/consul.out 2>&1 &
-# sudo nohup nomad agent -dev > /tmp/nomad.out 2>&1 &
-# cd vagrant-share/nomad-scripts
-# nomad run /home/core/vagrant-share/nomad-scripts/docker_without_cmd.hcl
-# nomad run /home/core/vagrant-share/nomad-scripts/docker_with_cmd.hcl
-# curl -s http://127.0.0.1:8500/v1/catalog/nodes  | jq '.'
-# curl -s http://127.0.0.1:8500/v1/catalog/services  | jq '.'
-# curl -s http://127.0.0.1:8500/v1/catalog/service/example-web-httpd  | jq '.'
-# dig @127.0.0.1 -p 8600 example-web-httpd.service.consul
+=begin
+cd vagrant-share/packer-scripts
+packer build machine_web-front.json
+docker build -t imaizm/web-front:0.1_with_cmd /home/core/vagrant-share/packer-scripts/dockerfiles/web-front/
+docker run -d -p 8080:80 imaizm/web-front:0.1_with_cmd
+cd
+nohup consul agent -server -bootstrap-expect 1 -data-dir /tmp/consul -ui-dir /home/core/consul-web-ui/dist -client=0.0.0.0 > /tmp/consul.out 2>&1 &
+sudo nohup nomad agent -dev > /tmp/nomad.out 2>&1 &
+cd vagrant-share/nomad-scripts
+nomad run /home/core/vagrant-share/nomad-scripts/docker_without_cmd.hcl
+nomad run /home/core/vagrant-share/nomad-scripts/docker_with_cmd.hcl
+curl -s http://127.0.0.1:8500/v1/catalog/nodes  | jq '.'
+curl -s http://127.0.0.1:8500/v1/catalog/services  | jq '.'
+curl -s http://127.0.0.1:8500/v1/catalog/service/example-web-httpd  | jq '.'
+dig @127.0.0.1 -p 8600 example-web-httpd.service.consul
+
+consul agent -data-dir=/tmp/consul -server -bootstrap-expect 2 &
+
+# CoreOs /usr/lib64/systemd/system/docker.service
+[Unit]
+Description=Docker Application Container Engine
+Documentation=http://docs.docker.com
+After=docker.socket early-docker.target network.target
+Requires=docker.socket early-docker.target
+
+[Service]
+EnvironmentFile=-/run/flannel_docker_opts.env
+MountFlags=slave
+LimitNOFILE=1048576
+LimitNPROC=1048576
+ExecStart=/usr/lib/coreos/dockerd daemon --host=fd:// $DOCKER_OPTS $DOCKER_OPT_BIP $DOCKER_OPT_MTU $DOCKER_OPT_IPMASQ
+
+[Install]
+WantedBy=multi-user.target
+
+# /usr/share/oem/cloud-config.yml
+
+    - name: docker.service
+      command: start
+      content: |
+        [Unit]
+        Description=Docker Application Container Engine
+        Documentation=http://docs.docker.com
+        After=docker.socket early-docker.target network.target
+        Requires=docker.socket early-docker.target
+        
+        [Service]
+        Environment="DOCKER_OPTS=--dns 172.17.42.1 --dns 8.8.8.8 --dns-search service.consul"
+        EnvironmentFile=-/run/flannel_docker_opts.env
+        MountFlags=slave
+        LimitNOFILE=1048576
+        LimitNPROC=1048576
+        ExecStart=/usr/lib/coreos/dockerd daemon --host=fd:// $DOCKER_OPTS $DOCKER_OPT_BIP $DOCKER_OPT_MTU $DOCKER_OPT_IPMASQ
+        
+        [Install]
+        WantedBy=multi-user.target
+
 #
-# consul agent -data-dir=/tmp/consul -server -bootstrap-expect 2 &
+--dns 172.17.42.1 --dns `grep nameserver /etc/resolv.conf|head -1|awk '{print $2}'` --dns-search service.consul
+
+=end
