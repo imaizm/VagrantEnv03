@@ -11,7 +11,9 @@
     chmod +x consul
     mkdir /tmp/consul
     chmod 777 /tmp/consul
+    mkdir -p /etc/consul/conf.d
   args:
     chdir: /usr/local/bin/
 - name: configure consul
   template: src=supervisor_consul.conf.j2 dest=/etc/supervisor/conf.d/supervisor_consul.conf
+  template: src=consul-config.conf.j2 dest=/etc/consul/conf.d/consul-config.conf

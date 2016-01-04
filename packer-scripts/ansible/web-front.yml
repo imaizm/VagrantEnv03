@@ -1,5 +1,8 @@
 - hosts: 127.0.0.1
   user: root
+  vars:
+    consul_service_name: "web"
+    consul_service_port: 80
   roles:
     - supervisor
     - httpd
