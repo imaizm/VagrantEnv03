@@ -134,7 +134,9 @@ nomad run /home/core/vagrant-share/nomad-scripts/docker_with_cmd.hcl
 curl -s http://127.0.0.1:8500/v1/catalog/nodes  | jq '.'
 curl -s http://127.0.0.1:8500/v1/catalog/services  | jq '.'
 curl -s http://127.0.0.1:8500/v1/catalog/service/example-web-httpd  | jq '.'
+curl -s http://127.0.0.1:8500/v1/catalog/service/web  | jq '.'
 dig @127.0.0.1 -p 8600 example-web-httpd.service.consul
+dig @127.0.0.1 web.service.consul
 
 consul agent -data-dir=/tmp/consul -server -bootstrap-expect 2 &
 
