@@ -179,6 +179,15 @@ WantedBy=multi-user.target
         [Install]
         WantedBy=multi-user.target
 
+# /usr/share/oem/cloud-config.yml
+
+    - name: docker.service
+      drop-ins:
+        - name: "50-set-docker-opts.conf"
+          content: |
+            [Service]
+            Environment="DOCKER_OPTS=--dns 172.17.42.1 --dns 8.8.8.8 --dns-search service.consul"
+
 #
 --dns 172.17.42.1 --dns `grep nameserver /etc/resolv.conf|head -1|awk '{print $2}'` --dns-search service.consul
 
