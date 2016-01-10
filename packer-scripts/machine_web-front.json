@@ -23,6 +23,15 @@
 				"ansible/roles/fluentd",
 				"ansible/roles/dnsmasq"
 			]
+		},
+		{
+			"type": "shell",
+			"inline": [
+				"pip uninstall -y ansible",
+				"apt-get remove -y python-pip python-dev",
+				"apt-get autoremove -y",
+				"rm -rf /var/lib/apt/lists/*"
+			]
 		}
 	],
 	"post-processors": [
