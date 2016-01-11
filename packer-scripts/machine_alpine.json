@@ -1,0 +1,30 @@
+{
+	"builders":[{
+		"type": "docker",
+		"image": "tavisto/alpine-bash",
+		"export_path": "image.tar"
+	}],
+	"provisioners":[
+		{
+			"type": "shell",
+			"inline": [
+				"apk update",
+				"apk add ansible"
+			]
+		},
+		{
+			"type": "shell",
+			"inline": [
+				"apk del ansible",
+				"rm -rf /var/cache/apk/*"
+			]
+		}
+	],
+	"post-processors": [
+		{
+			"type": "docker-import",
+			"repository": "imaizm/alpine-ansible",
+			"tag": "0.1"
+		}
+	]
+}
