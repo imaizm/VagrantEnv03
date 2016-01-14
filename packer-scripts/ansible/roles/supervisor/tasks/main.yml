@@ -1,4 +1,2 @@
-- name: install supervisor
-  apt: name=supervisor state=installed
-- name: configure supervisor
-  template: src=supervisord.conf.j2 dest=/etc/supervisor/supervisord.conf
+- include: setup-Debian.yml
+  when: "ansible_os_family == 'Debian'"
