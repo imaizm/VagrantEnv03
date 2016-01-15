@@ -1,0 +1,2 @@
+- name: install curl (Debian)
+  apt: name=curl state=installed
