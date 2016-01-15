@@ -1,0 +1,4 @@
+- name: install httpd (Alpine)
+  shell: apk add apache2
+- name: enable httpd with supervisor (Alpine)
+  template: src=supervisor_httpd.conf-alpine.j2 dest=/etc/supervisor/conf.d/supervisor_httpd.conf

@@ -1,0 +1,3 @@
+[program:apache2]
+command=/bin/bash -c "source /usr/sbin/envvars && exec /usr/sbin/httpd -DFOREGROUND"
+redirect_stderr=true

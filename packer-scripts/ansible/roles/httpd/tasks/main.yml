@@ -1,12 +1,5 @@
-- name: install httpd
-  apt: name=apache2 state=installed
-- name: configure httpd
-  template: src=apache2.conf_2.4.j2 dest=/etc/apache2/apache2.conf
-- name: prepare httpd
-  shell: |
-    mkdir -p /var/lock/apache2
-    mkdir -p /var/run/apache2
-  args:
-    chdir: /
-- name: enable httpd with supervisor
-  template: src=supervisor_httpd.conf.j2 dest=/etc/supervisor/conf.d/supervisor_httpd.conf
+- include: setup-Debian.yml
+  when: "ansible_os_family == 'Debian'"
+
+- include: setup-Alpine.yml
+  when: "ansible_os_family == 'Alpine'"

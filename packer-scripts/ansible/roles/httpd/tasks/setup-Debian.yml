@@ -1,0 +1,12 @@
+- name: install httpd (Debian)
+  apt: name=apache2 state=installed
+- name: configure httpd
+  template: src=apache2.conf_2.4.j2 dest=/etc/apache2/apache2.conf
+- name: prepare httpd (Debian)
+  shell: |
+    mkdir -p /var/lock/apache2
+    mkdir -p /var/run/apache2
+  args:
+    chdir: /
+- name: enable httpd with supervisor (Debian)
+  template: src=supervisor_httpd.conf-ubuntu.j2 dest=/etc/supervisor/conf.d/supervisor_httpd.conf
