@@ -21,8 +21,7 @@
 				"ansible/roles/httpd",
 				"ansible/roles/supervisor",
 				"ansible/roles/consul",
-				"ansible/roles/fluentd",
-				"ansible/roles/dnsmasq"
+				"ansible/roles/fluentd"
 			]
 		},
 		{
@@ -39,7 +38,7 @@
 		{
 			"type": "docker-import",
 			"repository": "imaizm/web-front",
-			"tag": "0.1"
+			"tag": "1.0"
 		}
 	]
 }
