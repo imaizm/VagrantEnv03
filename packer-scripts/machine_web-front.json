@@ -17,6 +17,7 @@
 			"type": "ansible-local",
 			"playbook_file": "ansible/web-front.yml",
 			"role_paths": [
+				"ansible/roles/curl",
 				"ansible/roles/httpd",
 				"ansible/roles/supervisor",
 				"ansible/roles/consul",

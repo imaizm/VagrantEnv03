@@ -17,6 +17,7 @@
 			"type": "ansible-local",
 			"playbook_file": "ansible/dockerfile_builder_with_packer.yml",
 			"role_paths": [
+				"ansible/roles/curl",
 				"ansible/roles/packer",
 				"ansible/roles/go"
 			]
