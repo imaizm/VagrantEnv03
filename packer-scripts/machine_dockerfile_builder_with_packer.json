@@ -26,8 +26,8 @@
 	"post-processors": [
 		{
 			"type": "docker-import",
-			"repository": "imaizm/dockerfile_builder",
-			"tag": "0.1"
+			"repository": "imaizm/docker-image-builder",
+			"tag": "1.0"
 		}
 	]
 }
