@@ -9,13 +9,22 @@
 			"type": "shell",
 			"inline": [
 				"apk update",
-				"apk add ansible"
+				"apk add --upgrade py-pip ansible",
+				"pip install --upgrade ansible"
+			]
+		},
+		{
+			"type": "ansible-local",
+			"playbook_file": "ansible/alpine-base.yml",
+			"role_paths": [
+				"ansible/roles/curl",
+				"ansible/roles/supervisor"
 			]
 		},
 		{
 			"type": "shell",
 			"inline": [
-				"apk del ansible",
+				"apk del ansible py-pip",
 				"rm -rf /var/cache/apk/*"
 			]
 		}
