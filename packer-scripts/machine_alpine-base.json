@@ -33,7 +33,7 @@
 		{
 			"type": "docker-import",
 			"repository": "imaizm/alpine-ansible",
-			"tag": "0.1"
+			"tag": "1.0"
 		}
 	]
 }
