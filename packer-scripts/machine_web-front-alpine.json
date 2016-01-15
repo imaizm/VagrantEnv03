@@ -15,7 +15,7 @@
 		},
 		{
 			"type": "ansible-local",
-			"playbook_file": "ansible/alpine-base.yml",
+			"playbook_file": "ansible/web-front-alpine.yml",
 			"role_paths": [
 				"ansible/roles/curl",
 				"ansible/roles/supervisor",
