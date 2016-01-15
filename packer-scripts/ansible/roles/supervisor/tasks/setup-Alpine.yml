@@ -2,7 +2,7 @@
   shell: apk add supervisor
 - name: mkdir for supervisor (Alpine)
   shell: |
-    mkdir /etc/supervisor/conf.d
+    mkdir -p /etc/supervisor/conf.d
     mkdir /var/log/supervisor
 - name: configure supervisor (Alpine)
   template: src=supervisord.conf.j2 dest=/etc/supervisord.conf
