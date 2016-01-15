@@ -1,4 +1,4 @@
-- name: install supervisor (debian)
+- name: install supervisor (Debian)
   apt: name=supervisor state=installed
-- name: configure supervisor (debian)
+- name: configure supervisor (Debian)
   template: src=supervisord.conf.j2 dest=/etc/supervisor/supervisord.conf

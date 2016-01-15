@@ -1,2 +1,5 @@
 - include: setup-Debian.yml
   when: "ansible_os_family == 'Debian'"
+
+- include: setup-Alpine.yml
+  when: "ansible_os_family == 'Alpine'"
