@@ -37,3 +37,6 @@ build/
 .vagrant
 
 /nomad
+
+# Mac
+.DS_Store
